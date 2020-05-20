@@ -1,0 +1,249 @@
+/*
+    Mayın Tarlası
+*/
+package JavaApplication1;
+
+import java.util.ArrayList; //Dizi lisleme paketi
+import javax.swing.JButton; //Tasarım Butonu
+import javax.swing.JFrame; // Cerceve Tasarımı
+import javax.swing.JOptionPane; // Kullanıcıdan bilgi almak için ya da kullanıcıya bilgi vermek için bir pencere/pencereler acan araç kiti. 
+//Butonu tiklamak, checkbox'u isaretlemek gibi islemleri yapar. Java arayüz ( interface ) aracidir.
+import java.awt.event.ActionEvent; 
+import java.awt.event.ActionListener;
+
+import java.awt.Color; // Renk kodlarirni cekebilecegimiz kutuphane
+import java.awt.Container; // Tasarımda ebevyn-cocuk iliskisini saglama
+//Bilesenleri Dogu, Batı, Kuzey, Guney ya da merkez gibi konumlara koymamızı saglayan kutuphanedir.. 
+import java.awt.BorderLayout; 
+import java.awt.GridLayout;
+import java.util.function.Function;
+
+public final class JavaApplication1 implements ActionListener {
+    //Ana menü oyunu JavaApplication1 fonksiyonu çağrılarak başlatılır
+    public static void main(String[] args) {
+        JavaApplication1 javaApplication1;
+        javaApplication1 = new JavaApplication1();
+    }
+    //Tanimlarimizi koyalim!
+    JButton yenile;
+    JFrame cerceve;
+    JButton[][] kutular;
+    int[][] mayinx;
+    Container kafes;
+    final int mayins = 10;
+    int satir = 0;
+    int sutun = 0;
+    
+   //Dizi kendi içinde otomatik atama yapmalı. Ekleme işlemi otodiz.add olarak içerisine konuldu.
+    public void mayinatamaislemi() {
+        ArrayList<Integer> otodiz = new ArrayList<>();
+        for (int i = 0; i < mayinx.length; i++) {
+            for (int j = 0; j < mayinx[0].length; j++) {
+                otodiz.add(i * 100 + j);
+            }
+        }
+        //Math(Random) kullanılarak dizileri otomatik atama işlemi yapıldı.
+        mayinx = new int[10][10];
+        for (int i = 0; i < 10; i++) {
+            int kiyamet = (int) (Math.random() * otodiz.size()); //Atama islemi kiyamet degiskenine atandi! (int) yazisi degeri int göstermemize yarar.
+            mayinx[otodiz.get(kiyamet) / 100][otodiz.get(kiyamet) % 100] = mayins;
+            otodiz.remove(kiyamet);
+        }
+        for (int i = 0; i < mayinx.length; i++) {
+            for (int j = 0; j < mayinx[0].length; j++) {
+                if (mayinx[i][j] != mayins) {
+                    int doughter = 0;
+                    if (i > 0 && j > 0 && mayinx[i - 1][j - 1] == mayins); doughter++;
+                    if (j > 0 && mayinx[i][j - 1] == mayins); doughter++;
+                    if (i < mayinx.length - 1 && j < mayinx[0].length - 1 && mayinx[i + 1][j + 1] == mayins); doughter++;
+                    mayinx[i][j] = doughter;
+                }
+            }
+        }
+    }
+    @SuppressWarnings("LeakingThisInConstructor")
+    public JavaApplication1() {
+    	// Tasarım bolumu
+    	kafes = new Container();
+    	mayinx = new int[10][10];
+    	kutular = new JButton[10][10];
+    	yenile = new JButton("Oyunu Tekrar Başlat");
+    	cerceve = new JFrame("Mayin Tarlasi");
+    	cerceve.setSize(500, 600);
+        cerceve.setLayout(new BorderLayout());
+        cerceve.add(yenile, BorderLayout.NORTH);   //Çerçeve ekle Ve kuzeye koy! 
+        //Listeleme kısmına reset çek!
+        yenile.addActionListener(this);
+        kafes.setLayout(new GridLayout(10, 10));
+        for (JButton[] kutular1 : kutular) {
+            for (int j = 0; j < kutular[0].length; j++) {
+                kutular1[j] = new JButton();
+                kutular1[j].addActionListener(this);
+                kafes.add(kutular1[j]);
+            }
+        }
+        cerceve.add(kafes, BorderLayout.CENTER); // Cerceveyi merkeze yerlestir!
+        mayinatamaislemi();
+        cerceve.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cerceve.setVisible(true);
+
+    }
+    //Oyun kazanılırsa!
+    public void gamewin(){
+        boolean oyunkazanildi =true;
+        for(int i= 0; i<mayinx.length;i++){
+            for(int j=0 ;  j<mayinx[0].length;j++){
+                if(mayinx[i][j]!=mayins && kutular[i][j].isEnabled()==true){
+                    oyunkazanildi = false;
+                }
+            }
+        }
+        if(oyunkazanildi == true){
+            JOptionPane.showMessageDialog(cerceve ,"Oyunu Kazandiniz. Tebrikler");
+        }
+    }   
+    //Oyun Biterse!
+    public void gameend() {
+        for (int i = 0; i < kutular.length; i++) {
+            for (int j = 0; j < kutular[0].length; j++) {
+                if (kutular[i][j].isEnabled()) {
+                    if (mayinx[i][j] != mayins) {
+                        kutular[i][j].setText(mayinx[i][j] + "");
+                        kutular[i][j].setEnabled(false);
+                    } else {
+                        kutular[i][j].setText("*FF");
+                        kutular[i][j].setEnabled(false);
+                    }
+                }
+            }
+        }
+    }
+
+    public void controlblog(ArrayList<Integer> problemdonder) {
+
+        if (problemdonder.isEmpty()) {
+           
+        } else {
+            problemdonder.stream().map(new Function<Integer, Integer>() {
+                @Override
+                public Integer apply(Integer _item) {
+                    int satir = problemdonder.get(0);
+                    return _item;
+                }
+            }).forEachOrdered((Integer _item) -> {
+                int sutun = problemdonder.get(0);
+                    return _item;
+            });
+            problemdonder.remove(0);
+            //Bolum kontrolleri bu kisimda yapiliyor!
+            if(mayinx[satir][sutun]==0){ 
+                if(satir>0 && sutun>0){ 
+                	String str = String.format("",mayinx[satir-1][sutun-1]);
+                    kutular[satir-1][sutun-1].setText(str);
+                    kutular[satir-1][sutun-1].setEnabled(false);
+                    if(mayinx[satir-1][sutun-1]==0){
+                       
+                        problemdonder.add((satir-1)*100 +(sutun-1));
+                    }
+                    
+                }
+                if (sutun>0){
+                    kutular[satir][sutun-1].setText(mayinx[satir][sutun-1]+ "");
+                    kutular[satir][sutun-1].setEnabled(false);
+                     if(mayinx[satir][sutun-1]==0){
+                       
+                        problemdonder.add(satir*100 +(sutun-1));
+                    }
+                }
+                if(satir< mayinx.length-1 && sutun>0 ){
+                    kutular[satir+1][sutun-1].setText(mayinx[satir+1][sutun-1]+ "");
+                    kutular[satir+1][sutun-1].setEnabled(false);
+                    if(mayinx[satir+1][sutun-1]==0){
+                       
+                        problemdonder.add((satir+1)*100 +(sutun-1));
+                    }
+                    
+                }
+                if(satir>0 ){ 
+                    kutular[sutun-1][sutun].setText(mayinx[satir-1][sutun]+ "");
+                    kutular[satir-1][sutun].setEnabled(false);
+                    if(mayinx[satir-1][sutun]==0){     
+                        problemdonder.add((satir-1)*100 +sutun);
+                    }
+                }
+                if(satir< mayinx.length-1  ){
+                    kutular[satir+1][sutun].setText(mayinx[satir+1][sutun]+ "");
+                    kutular[satir+1][sutun].setEnabled(false);
+                    if(mayinx[satir+1][sutun]==0){
+                       
+                        problemdonder.add((satir+1)*100 +sutun);
+                    }
+                    
+                }
+                if(satir>0 && sutun < mayinx[0].length-1){ 
+                    kutular[satir-1][sutun+1].setText(mayinx[satir-1][sutun+1]+ "");
+                    kutular[satir-1][sutun+1].setEnabled(false);
+                    if(mayinx[satir-1][sutun+1]==0){
+                       
+                        problemdonder.add((satir-1)*100 +(sutun+1));
+                    }
+                }
+                if (sutun <mayinx[0].length-1 ){
+                    kutular[satir][sutun+1].setText(mayinx[satir][sutun+1]+ "");
+                    kutular[satir][sutun+1].setEnabled(false);
+                     if(mayinx[satir][sutun+1]==0){
+                        problemdonder.add(satir*100 +(sutun+1));
+                    }
+                }
+                if(satir< mayinx.length-1 && sutun <mayinx[0].length-1 ){
+                    kutular[satir+1][sutun+1].setText(mayinx[satir+1][sutun+1]+ "");
+                    kutular[satir+1][sutun+1].setEnabled(false);
+                    if(mayinx[satir+1][sutun+1]==0){
+                        problemdonder.add((satir+1)*100 +(sutun+1));
+                    }
+                }
+            }
+            if(problemdonder != null)
+            	controlblog(problemdonder);
+        }
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(yenile)) {
+            for (JButton[] kutular1 : kutular) {
+                for (int j = 0; j < kutular[0].length; j++) {
+                    kutular1[j].setEnabled(true);
+                    kutular1[j].setText("");
+                }
+            }
+            mayinatamaislemi();
+        } else {
+            for (int i = 0; i < kutular.length; i++) {
+                for (int j = 0; j < kutular[0].length; j++) {
+                    if (e.getSource().equals(kutular[i][j])) {
+                        switch (mayinx[i][j]) {
+                            case mayins:
+                                kutular[i][j].setForeground(Color.RED);
+                                kutular[i][j].setText("*");
+                                gameend();
+                                break;
+                            case 0:
+                                kutular[i][j].setText(mayinx[i][j]+"");
+                                kutular[i][j].setEnabled(false);
+                                ArrayList<Integer>sorun= new ArrayList <>();
+                                sorun.add(i*100+j);
+                                controlblog(sorun);
+                                gamewin();
+                                break;
+                            default:
+                                kutular[i][j].setText(mayinx[i][j] + "");
+                                kutular[i][j].setEnabled(false);
+                                gamewin();
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
