@@ -230,9 +230,9 @@ public final class JavaApplication1 implements ActionListener {
                             case 0:
                                 kutular[i][j].setText(mayinx[i][j]+"");
                                 kutular[i][j].setEnabled(false);
-                                ArrayList<Integer>sorun= new ArrayList <>();
-                                sorun.add(i*100+j);
-                                controlblog(sorun);
+                                ArrayList<Integer>problemgonder= new ArrayList <>();
+                                problemgonder.add(i*100+j);
+                                controlblog(problemgonder);
                                 gamewin();
                                 break;
                             default:
