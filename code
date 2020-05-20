@@ -16,8 +16,8 @@ import java.awt.Container; // Tasarımda ebevyn-cocuk iliskisini saglama
 //Bilesenleri Dogu, Batı, Kuzey, Guney ya da merkez gibi konumlara koymamızı saglayan kutuphanedir.. 
 import java.awt.BorderLayout; 
 import java.awt.GridLayout;
+// Fonksiyon sınıfı çekildi!
 import java.util.function.Function;
-
 public final class JavaApplication1 implements ActionListener {
     //Ana menü oyunu JavaApplication1 fonksiyonu çağrılarak başlatılır
     public static void main(String[] args) {
@@ -33,8 +33,7 @@ public final class JavaApplication1 implements ActionListener {
     final int mayins = 10;
     int satir = 0;
     int sutun = 0;
-    
-   //Dizi kendi içinde otomatik atama yapmalı. Ekleme işlemi otodiz.add olarak içerisine konuldu.
+   //Dizi kendi içinde otomatik atama yapmalıdır. Ekleme işlemi otodiz.add olarak içerisine konuldu.
     public void mayinatamaislemi() {
         ArrayList<Integer> otodiz = new ArrayList<>();
         for (int i = 0; i < mayinx.length; i++) {
@@ -82,11 +81,11 @@ public final class JavaApplication1 implements ActionListener {
                 kafes.add(kutular1[j]);
             }
         }
+        //Cerceve ekleme bolumu
         cerceve.add(kafes, BorderLayout.CENTER); // Cerceveyi merkeze yerlestir!
         mayinatamaislemi();
         cerceve.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         cerceve.setVisible(true);
-
     }
     //Oyun kazanılırsa!
     public void gamewin(){
@@ -118,11 +117,9 @@ public final class JavaApplication1 implements ActionListener {
             }
         }
     }
-
     public void controlblog(ArrayList<Integer> problemdonder) {
-
+    //Sorunlari kontrol etme noktasi.
         if (problemdonder.isEmpty()) {
-           
         } else {
             problemdonder.stream().map(new Function<Integer, Integer>() {
                 @Override
@@ -142,10 +139,8 @@ public final class JavaApplication1 implements ActionListener {
                     kutular[satir-1][sutun-1].setText(str);
                     kutular[satir-1][sutun-1].setEnabled(false);
                     if(mayinx[satir-1][sutun-1]==0){
-                       
                         problemdonder.add((satir-1)*100 +(sutun-1));
                     }
-                    
                 }
                 if (sutun>0){
                     kutular[satir][sutun-1].setText(mayinx[satir][sutun-1]+ "");
@@ -162,7 +157,6 @@ public final class JavaApplication1 implements ActionListener {
                        
                         problemdonder.add((satir+1)*100 +(sutun-1));
                     }
-                    
                 }
                 if(satir>0 ){ 
                     kutular[sutun-1][sutun].setText(mayinx[satir-1][sutun]+ "");
