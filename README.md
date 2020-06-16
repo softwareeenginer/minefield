@@ -1,2 +1,2 @@
 # minefield
-This homework from university. Its minefield game.
+This homework from is university. Its minefield game.
